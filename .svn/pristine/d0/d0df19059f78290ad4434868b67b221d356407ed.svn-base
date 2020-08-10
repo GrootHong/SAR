@@ -1,0 +1,59 @@
+package listener;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+import gui.MainWindow;
+import util.SerialPortUtil;
+import util.ShowUtils;
+import util.SerialPortUtil.DataAvailableListener;
+
+public class SwitchConnectButtonListener implements ActionListener {
+
+	private MainWindow window;
+	private SerialPort switchPort;
+
+	public SwitchConnectButtonListener() {
+		super();
+	}
+
+	public SwitchConnectButtonListener(MainWindow window) {
+		super();
+		this.window = window;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String text = window.getSwitchConnectButton().getText();
+		String selected = (String) window.getComboBox_1_1().getSelectedItem();
+
+		if (text.equals("连接") && !selected.equals("选择串口号")) {
+			try {
+				if (!SerialPortUtil.isInUse(selected)) {
+					switchPort = SerialPortUtil.openPort(selected, 115200);
+					window.setSwitchPort(switchPort);
+					window.getSwitchConnectButton().setText("断开");
+					window.getLblNewLabel_13_1().setText("已连接");
+					window.getLblNewLabel_13_1().setForeground(Color.green);
+					
+				} else {
+					// 弹出提醒，串口已被占用
+					ShowUtils.message("对不起，所选串口正在被其他程序占用， 请重新选择！");
+					window.getComboBox_1_1().setSelectedIndex(0);
+				}
+			} catch (PortInUseException e1) {
+				e1.printStackTrace();
+			}
+		} else if (text.equals("断开")) {
+			SerialPortUtil.closePort(switchPort);
+			window.setSwitchPort(null);
+			window.getSwitchConnectButton().setText("连接");
+			window.getComboBox_1_1().setSelectedIndex(0);
+			window.getLblNewLabel_13_1().setText("未连接");
+			window.getLblNewLabel_13_1().setForeground(Color.red);
+		}
+	}
+
+}
