@@ -9,10 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-<<<<<<< HEAD
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -935,7 +933,6 @@ public class MainWindow {
 		// 添加到当前comboBox中
 
 		for (int i = 0; i < ports.size() - 2; i++) {
->>>>>>> branch 'master' of https://github.com/GrootHong/SAR.git
 			this.getComboBox_1().addItem(ports.get(i));
 			this.getComboBox_1_1().addItem(ports.get(i));
 		}
